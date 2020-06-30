@@ -19,4 +19,4 @@ Lo primero que se realiza es una inicialización para asegurarse de una recepci�
 
 En este caso, se procesa los datos recibidos, que serán un bus de nueve datos (RS y DB0-7) por una maquina de estado de 26 pasos, de los cuales 23-25 se utilizan para la escritura en la LCD. Los otros son isntrucciones para realizar diferentes acciones, como enceder o apagar la pantalla, iniciar la entreda de datos o limpiar.
 
-### Posteriormente, se modificaran los parámetros de entrada para leer lo que se obtenga de la base de datos.
+Se tendrá un dato de entrada dependiendo de lo que se entregue en la base de datos, también se tendrá un botón para la actualización de al base.
