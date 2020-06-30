@@ -25,7 +25,7 @@ Se tendrá un dato de entrada dependiendo de lo que se entregue en la base de da
 
 #### LCD
 
-En este módulo se genera el funcionamiento de la pantalla LCD, para esto se tienen las entradas clock_100, push_button y datobase; las salidas rs, e y d. Los 23 estados mencionados anteriormente y así poder transmitir la información a la pantalla.
+En este módulo se genera el funcionamiento de la pantalla LCD, para esto se tienen las entradas `clock_100`, `push_button` y `datobase`; las salidas `rs`, `e` y `d`. Los 23 estados mencionados anteriormente y así poder transmitir la información a la pantalla.
 
 ```verilog
 input clock_100;
@@ -63,7 +63,7 @@ endmodule
 
 #### baudgen.v y baudgen.vh
 
-Son los módulos encargados de la generar transmisión de bits en una velocidad de 115200 baudios. En el fichero baudgen.vh se tiene valores de los divisores para transmitir a las velocidades estándares.
+Son los módulos encargados de la generar transmisión de bits en una velocidad de 115200 baudios. En el fichero `baudgen.vh` se tiene valores de los divisores para transmitir a las velocidades estándares.
 ```verilog
 `define B115200 217 
 `define B57600  434
@@ -77,7 +77,7 @@ Son los módulos encargados de la generar transmisión de bits en una velocidad 
 `define B300    83333
 ```
 
-Y en baudgen.v se genera una señal de reloj continua a la velocidad pedida. 
+Y en `baudgen.v` se genera una señal de reloj continua a la velocidad pedida. 
 ```verilog
 always @(posedge clk)
 
