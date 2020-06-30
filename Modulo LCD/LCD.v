@@ -8,6 +8,7 @@ module LCD(
 
 input clock_100;
 input push_button;
+input [31:0] datobase;
 output rs;
 output e;
 output [7:0] d;
