@@ -13,8 +13,8 @@
 #                                                                             #
 ###############################################################################
 
-chip.bin: LCD.v uart_tx.v baudgen.v uart_tx.v Top.v divisor.v divisorTop.v Top.pcf
-	yosys -q -p "synth_ice40 -blif chip.blif" LCD.v baudgen.v uart_tx.v Top.v divisor.v divisorTop.v
+chip.bin: LCD.v uart_tx.v baudgen.v uart_tx.v 
+	yosys -q -p "synth_ice40 -blif chip.blif" LCD.v baudgen.v uart_tx.v 
 	arachne-pnr -d 8k -P tq144:4k -p Top.pcf chip.blif -o chip.txt
 	icepack chip.txt chip.bin
 
