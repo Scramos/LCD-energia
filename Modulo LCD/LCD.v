@@ -3,6 +3,7 @@
 module LCD(
   clock_100,
   push_button,
+  datobase,
   rs,
   e,
   d,
