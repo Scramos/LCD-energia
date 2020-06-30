@@ -1,3 +1,5 @@
+`include "baudgen.vh"
+
 module LCD(
   clock_100,
   push_button,
