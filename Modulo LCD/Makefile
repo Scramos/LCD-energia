@@ -15,8 +15,8 @@
 
 chip.bin: LCD.v uart_tx.v baudgen.v uart_tx.v 
 	yosys -q -p "synth_ice40 -blif chip.blif" LCD.v baudgen.v uart_tx.v 
-	arachne-pnr -d 8k -P tq144:4k -p Top.pcf chip.blif -o chip.txt
-	icepack chip.txt chip.bin
+	arachne-pnr -d 8k -P tq144:4k -p 
+	icepack 
 
 .PHONY: upload
 upload:
@@ -25,4 +25,4 @@ upload:
 
 .PHONY: clean
 clean:
-	$(RM) -f chip.blif chip.txt chip.ex chip.bin
+	$(RM) -f
