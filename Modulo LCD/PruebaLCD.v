@@ -149,56 +149,53 @@ always @(posedge clock) begin
 
 case (state)
 
-  // Step 1 - 100ms delay after power on
+  // Delay 100ms después de prender
   STATE00: begin                        
-    busy_flag <= 1'b1;                  // tells other modules LCD is processing
-    if (count == D_100ms) begin         // if 100ms have elapsed
-      rs <= 1'b0;                       // pull RS low to indicate instruction
-      d  <= 8'b00110000;                // set data to Function Set instruction
-      count <= 24'h000000;              // clear the counter
-      state <= STATE01;                 // advance to the next state
+    busy_flag <= 1'b1;                 
+    if (count == D_100ms) begin         
+      rs <= 1'b0;                       
+      d  <= 8'b00110000;                
+      count <= 24'h000000;              
+      state <= STATE01;                
     end
-    else begin                          // if 100ms have not elapsed
-      count <= count + 24'h000001;      // increment the counter
+    else begin                          
+      count <= count + 24'h000001;      
     end
   end
 
-  // Steps 2 thru 4 raise and lower the enable pin three times to enter the 
-  // Function Set instruction that was loaded to the databus in STATE00 above
-
-  // Step 2 - first Function Set instruction
+  
+  //  Primer set de instrucciones
   STATE01: begin                        
-    if (count == D_50ns) begin          // if 50ns have elapsed (lets RS and D settle)
-      e <= 1'b1;                        // bring E high to initiate data write    
-      count <= 24'h000000;              // clear the counter
-      state <= STATE02;                 // advance to the next state
+    if (count == D_50ns) begin          
+      e <= 1'b1;                           
+      count <= 24'h000000;              
+      state <= STATE02;                 
     end
-    else begin                          // otherwise
-      count <= count + 24'h000001;      // increment the counter
+    else begin                          
+      count <= count + 24'h000001;      
     end
   end
   STATE02: begin                         
-    if (count == D_250ns) begin         // if 250ns have elapsed
-      e <= 1'b0;                        // bring E low   
-      count <= 24'h000000;              // clear the counter 
-      state <= STATE03;                 // advance to the next state
-    end
-    else begin                          // otherwise
-      count <= count + 24'h000001;      // increment the counter
+    if (count == D_250ns) begin         
+      e <= 1'b0;                         
+      count <= 24'h000000;               
+      state <= STATE03;                 
+    else begin                         
+      count <= count + 24'h000001;     
     end
   end
   STATE03: begin
-    if (count == D_5ms) begin           // if 5ms have elapsed
-      e <= 1'b1;                        // bring E high to initiate data write   
-      count <= 24'h000000;              // clear the counter      
-      state <= STATE04;                 // advance to the next state               
+    if (count == D_5ms) begin           
+      e <= 1'b1;                          
+      count <= 24'h000000;                  
+      state <= STATE04;                             
     end
-    else begin                          // otherwise
-      count <= count + 24'h000001;      // increment the counter
+    else begin                         
+      count <= count + 24'h000001;      
     end
   end
 
- // Step 3 - second Function Set instruction
+ // Segundo set de instrucciones
   STATE04: begin
     if (count == D_250ns) begin         
       e <= 1'b0;                            
@@ -220,7 +217,7 @@ case (state)
     end
     end
 
-  // Step 4 - third and final Function Set instruction
+  //  Ultimo set de instrucciones
   STATE06: begin
     if (count == D_250ns) begin        
       e <= 1'b0;      
@@ -233,7 +230,7 @@ case (state)
   end
   STATE07: begin
     if (count == D_200us) begin         
-      d  <= 8'b00111000;                // Configuration: 8-bit, 2 lines, 5x7 font 
+      d  <= 8'b00111000;                 
       count <= 24'h000000;               
       state <= STATE08;
     end
@@ -242,7 +239,7 @@ case (state)
     end
   end
 
-  // Step 5 - enter the Configuation command
+  // Comando de configuración
   STATE08: begin                        
     if (count == D_50ns) begin          
       e <= 1'b1; 
@@ -265,7 +262,7 @@ case (state)
   end
   STATE10: begin
     if (count == D_60us) begin         
-      d  <= 8'b00001000;                // Display Off command
+      d  <= 8'b00001000;                
       count <= 24'h000000;
       state <= STATE11;
     end
@@ -274,7 +271,7 @@ case (state)
     end
   end
 
-  // Step 6 - enter the Display Off command
+  // / Apagar el display
   STATE11: begin                        
     if (count == D_50ns) begin          
       e <= 1'b1;                       
@@ -298,7 +295,7 @@ case (state)
   end
   STATE13: begin
     if (count == D_60us) begin          
-      d  <= 8'b00000001;                // Clear command
+      d  <= 8'b00000001;                
       count <= 24'h000000; 
       state <= STATE14;
      end
@@ -307,7 +304,7 @@ case (state)
     end
   end
 
-  // Step 7 - enter the Clear command
+  // Comando clear
   STATE14: begin                        
     if (count == D_50ns) begin          
       e <= 1'b1;
@@ -330,7 +327,7 @@ case (state)
   end
   STATE16: begin
     if (count == D_5ms) begin           
-      d  <= 8'b00000110;                // Entry Mode:cursor moves, display stands still  
+      d  <= 8'b00000110;                 
       count <= 24'h000000; 
       state <= STATE17;
      end
@@ -339,7 +336,7 @@ case (state)
     end
   end
 
-  //Step 8 - Set the Entry Mode
+  //Modo de entrada
   STATE17: begin                        
     if (count == D_50ns) begin          
       e <= 1'b1;   
@@ -362,7 +359,7 @@ case (state)
   end
   STATE19: begin
     if (count == D_60us) begin          
-      d  <= 8'b00001100;                // Display On
+      d  <= 8'b00001100;                
       count <= 24'h000000;
       state <= STATE20;
     end
@@ -371,7 +368,7 @@ case (state)
     end
   end
 
-  // Step 9 - enter the Display On command
+  // Encender display
   STATE20: begin                        
     if (count == D_50ns) begin          
       e <= 1'b1;
@@ -393,8 +390,8 @@ case (state)
     end
   end
   STATE22: begin
-    if (count == D_60us) begin          // 60us
-      busy_flag <= 1'b0;                // clear the busy flag
+    if (count == D_60us) begin          
+      busy_flag <= 1'b0;                
       count <= 24'h000000; 
       state <= STATE23;  
     end
@@ -403,57 +400,58 @@ case (state)
     end
   end
 
-// End Initialization - Start entering data.
+// Inicio de entrada de datos
+
 
   STATE23: begin
-    if (start) begin                      // wait for data            
-      if (count == 24'h000000) begin      // if this is the first iteration of STATE23 
-        busy_flag <= 1'b1;                // set the busy flag
-        rs <= d_in[8];                    // read the RS value from input       
-        d  <= d_in[7:0];                  // read the data value input     
-        count <= count + 24'h000001;      // increment the counter
+    if (start) begin                                 
+      if (count == 24'h000000) begin      
+        busy_flag <= 1'b1;                
+        rs <= d_in[8];                           
+        d  <= d_in[7:0];                  
+        count <= count + 24'h000001;      
       end  
-      else if (count == D_50ns) begin     // if 50ns have elapsed
-       count <= 24'h000000;               // clear the counter
-       state <= STATE24;                  // advance to the next state
+      else if (count == D_50ns) begin    
+       count <= 24'h000000;               
+       state <= STATE24;                  
        end
-      else begin                          // if it's not the first or last
-        count <= count + 24'h000001;      // increment the counter
+      else begin                          
+        count <= count + 24'h000001;      
       end
     end
   end
   STATE24: begin                        
-    if (count == 24'h000000) begin        // if this is the first iteration of STATE24
-      e <= 1'b1;                          // bring E high to initiate data write
-      count <= count + 24'h000001;        // increment the counter
+    if (count == 24'h000000) begin        
+      e <= 1'b1;                         
+      count <= count + 24'h000001;       
     end
-    else if (count == D_250ns) begin      // if 250ns have elapsed
-      count <= 24'h000000;                // clear the counter
-      state <= STATE25;                   // advance to the next state
+    else if (count == D_250ns) begin      
+      count <= 24'h000000;                
+      state <= STATE25;                   
     end
-    else begin                            // if it's not the first or last
-      count <= count + 24'h00000001;      // increment the counter
+    else begin                            
+      count <= count + 24'h00000001;     
     end
   end
   STATE25: begin
-    if (count == 24'h000000) begin        // if this is the first iteration of STATE25
-      e <= 1'b0;                          // bring E low
-      count <= count + 24'h000001;        // increment the counter
+    if (count == 24'h000000) begin        
+      e <= 1'b0;                          
+      count <= count + 24'h000001;        
     end
-    else if (count == D_40us && rs == 1'b1) begin  // if data is a character and 40us has elapsed
-      start <= 1'b0;                      // clear the start flag
-      busy_flag <= 1'b0;                  // clear the busy flag
-      count <= 24'h000000;                // clear the counter 
-      state <= STATE23;                   // go back to STATE23 and wait for next data
+    else if (count == D_40us && rs == 1'b1) begin  
+      start <= 1'b0;                      
+      busy_flag <= 1'b0;                 
+      count <= 24'h000000;                 
+      state <= STATE23;                  
     end
-    else if (count == D_2ms && rs == 1'b0) begin // if data is a command and 2ms has elapsed
-      start <= 1'b0;                      // clear the start flag
-      busy_flag <= 1'b0;                  // clear the busy flag
-      count <= 24'h000000;                // clear the counter 
-      state <= STATE23;                   // go back to STATE23 and wait for next data
+    else if (count == D_2ms && rs == 1'b0) begin 
+      start <= 1'b0;                      
+      busy_flag <= 1'b0;                  
+      count <= 24'h000000;                 
+      state <= STATE23;                   
     end
-    else begin                            // if it's not the first or last
-      count <= count + 24'h000001;        // increment the counter
+    else begin                            
+      count <= count + 24'h000001;       
     end
   end
   default: ;
@@ -485,7 +483,7 @@ reg halt = 1'b0;
 
 always @ (posedge clock) begin
 
-  // resets the demo on the push button
+  // reset
   if (internal_reset) begin             
      rom_address <= 4'b0000;
      data_ready <= 1'b0;
@@ -493,26 +491,20 @@ always @ (posedge clock) begin
      halt <= 1'b0;
   end
 
-  // stops the demo after one run through the ROM
+  // stop
   if (rom_address == 4'b1111) begin    
     halt <= 1'b1;
     data_ready <= 1'b0;
     rom_address <= 4'b0000;
-    //test_trig <= 1;
+   
   end
 
-  // prevent the system from sending 
-  // the first character during initialization
+ 
   if (rom_address == 4'b0000 && halt == 1'b0) begin  
     current_lcd_state <= 1'b1;                       
   end
 
-  // this logic monitors the LCD module busy flag
-  // when the LCD goes from busy to free, the controller raises the 
-  // data ready flag and the output of the ROM is presented to the LCD module
-  // when the LCD goes from free to busy, the controller increments the
-  // ROM address to be ready for the next cycle
-                               
+
   if (halt == 1'b0) begin                        
     if (current_lcd_state != lcd_busy) begin   
       current_lcd_state <= lcd_busy;
@@ -572,8 +564,8 @@ end
 endmodule
 //--------------------------------------
 module rom (
-rom_in   , // Address input
-rom_out    // Data output
+rom_in   , 
+rom_out    
 );
 input [3:0] rom_in;
 output [8:0] rom_out;
